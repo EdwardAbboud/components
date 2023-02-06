@@ -11,10 +11,21 @@
     <h1 id="this">My Components</h1>
     <div class="rotator">
       <h2>Flip through the elements</h2>
-      <div id="rotating-elements">
-        <a href="#" id="currently-selected" class="hovered">
-          <p>ABOUT</p>
+      
+      <div id="rotating-div">
+        <button id="prev-button"><img src="public/icons/arrow-left.svg"/></button>
+        <div id="rotating-elements">
+        <a href="#" id="left-side">
+          <p>LEFT</p>
         </a>
+        <a href="#" id="currently-selected" class="hovered">
+          <p>MIDDLE</p>
+        </a>
+        <a href="#" id="right-side">
+          <p>RIGHT</p>
+        </a>
+        </div>
+      <button id="next-button"><img src="public/icons/arrow-right.svg"/></button>
       </div>
     </div>
     
