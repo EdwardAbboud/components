@@ -1,17 +1,37 @@
 const data = ["1", "2", "3", "4", "5", "6", "7", "8"];
 let currentIndex = 0;
 
+const indexHandler = (direction) => {
+  if (direction === "next") {
+    if (currentIndex < data.length) {
+      currentIndex++;
+      console.log("Increment");
+    } else {
+      currentIndex = 0;
+    }
+    if (direction === "prev") {
+      if (currentIndex > 0) {
+        currentIndex--;
+        console.log("Decrement");
+      } else {
+        currentIndex = data.length;
+      }
+    }
+    console.log(currentIndex);
+  }
+};
+
 // Setting the initial HTML
 const parentDiv = document.getElementById("rotating-elements");
 parentDiv.innerHTML = `
 <a href="#" id="left-side">
-  <p id="left">${data[data.length - 1 - currentIndex]}</p>
+  ${data[data.length - 1 - currentIndex]}
 </a>
 <a href="#" id="currently-selected" class="hovered">
-  <p id="middle">${data[currentIndex]}</p>
+  ${data[currentIndex]}
 </a>
 <a href="#" id="right-side">
-  <p id="right">${data[currentIndex + 1]}</p>
+  ${data[currentIndex + 1]}
 </a>
 `;
 
@@ -22,11 +42,6 @@ parentDiv.innerHTML = `
 // button handling
 const nextButton = document.getElementById("next-button");
 const prevButton = document.getElementById("prev-button");
-
-// 3 bubbles
-const m = document.getElementById("middle");
-const l = document.getElementById("left");
-const r = document.getElementById("right");
 
 const nextHandler = () => {
   const current = document.getElementById("currently-selected");
@@ -39,10 +54,14 @@ const nextHandler = () => {
   left.style = "z-index: -1; filter: opacity(0)";
   left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
   right.classList.add("hovered");
+  right.innerHTML = `${data[currentIndex + 1]}`;
   right.id = "currently-selected";
+  left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
   left.id = "right-side";
+  current.innerHTML = `${data[currentIndex]}`;
   current.id = "left-side";
   current.classList.remove("hovered");
+  indexHandler("next");
 };
 
 const prevHandler = () => {
@@ -56,8 +75,11 @@ const prevHandler = () => {
   left.style = "z-index: -1; filter: opacity(0)";
   left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
   right.classList.add("hovered");
+  right.innerHTML = `${data[currentIndex + 1]}`;
   right.id = "currently-selected";
+  left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
   left.id = "left-side";
+  current.innerHTML = `${data[currentIndex]}`;
   current.id = "right-side";
   current.classList.remove("hovered");
 };
