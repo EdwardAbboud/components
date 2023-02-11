@@ -3,20 +3,22 @@ let currentIndex = 0;
 
 const indexHandler = (direction) => {
   if (direction === "next") {
-    if (currentIndex < data.length) {
+    if (currentIndex === data.length - 1) {
+      currentIndex = 0;
+      console.log("Reset");
+    } else if (currentIndex < data.length) {
       currentIndex++;
       console.log("Increment");
-    } else {
-      currentIndex = 0;
     }
-    if (direction === "prev") {
-      if (currentIndex > 0) {
-        currentIndex--;
-        console.log("Decrement");
-      } else {
-        currentIndex = data.length;
-      }
-    }
+    // if (direction === "prev") {
+    //   if (currentIndex > 0) {
+    //     currentIndex--;
+    //     console.log("Decrement");
+    //   } else {
+    //     currentIndex = data.length;
+    //     console.log("Reset");
+    //   }
+    // }
     console.log(currentIndex);
   }
 };
@@ -54,35 +56,39 @@ const nextHandler = () => {
   left.style = "z-index: -1; filter: opacity(0)";
   left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
   right.classList.add("hovered");
-  right.innerHTML = `${data[currentIndex + 1]}`;
+  right.innerHTML = `${
+    data[currentIndex + 1] ? data[currentIndex + 1] : data[0]
+  }`;
   right.id = "currently-selected";
   left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
   left.id = "right-side";
+
   current.innerHTML = `${data[currentIndex]}`;
   current.id = "left-side";
   current.classList.remove("hovered");
   indexHandler("next");
 };
 
-const prevHandler = () => {
-  const current = document.getElementById("currently-selected");
-  const right = document.getElementById("left-side");
-  const left = document.getElementById("right-side");
-  current.style =
-    "width: 150px; height: 150px; font-size: 15px; filter: blur(3px); z-index: 1";
-  right.style =
-    "width: 200px; height: 200px; font-size: 25px; filter: blur(0px); z-index: 3";
-  left.style = "z-index: -1; filter: opacity(0)";
-  left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
-  right.classList.add("hovered");
-  right.innerHTML = `${data[currentIndex + 1]}`;
-  right.id = "currently-selected";
-  left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
-  left.id = "left-side";
-  current.innerHTML = `${data[currentIndex]}`;
-  current.id = "right-side";
-  current.classList.remove("hovered");
-};
+// const prevHandler = () => {
+//   const current = document.getElementById("currently-selected");
+//   const right = document.getElementById("left-side");
+//   const left = document.getElementById("right-side");
+//   current.style =
+//     "width: 150px; height: 150px; font-size: 15px; filter: blur(3px); z-index: 1";
+//   right.style =
+//     "width: 200px; height: 200px; font-size: 25px; filter: blur(0px); z-index: 3";
+//   left.style = "z-index: -1; filter: opacity(0)";
+//   left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
+//   right.classList.add("hovered");
+//   right.innerHTML = `${data[currentIndex + 1]}`;
+//   right.id = "currently-selected";
+//   left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
+//   left.id = "left-side";
+//   current.innerHTML = `${data[currentIndex]}`;
+//   current.id = "right-side";
+//   current.classList.remove("hovered");
+//   indexHandler("prev");
+// };
 
-prevButton.addEventListener("click", prevHandler);
+// prevButton.addEventListener("click", prevHandler);
 nextButton.addEventListener("click", nextHandler);
