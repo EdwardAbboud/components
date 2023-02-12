@@ -1,65 +1,91 @@
 const data = ["1", "2", "3", "4", "5", "6", "7", "8"];
 let currentIndex = 0;
 
+const indexHandler = (direction) => {
+  if (direction === "next") {
+    if (currentIndex === data.length - 1) {
+      currentIndex = 0;
+      console.log("Reset");
+    } else if (currentIndex < data.length) {
+      currentIndex++;
+      console.log("Increment");
+    }
+  } else if (direction === "prev") {
+    if (currentIndex === 0) {
+      currentIndex = data.length - 1;
+      console.log("Reset");
+    } else if (currentIndex > 0) {
+      currentIndex--;
+      console.log("Decrement");
+    }
+  }
+};
+
 // Setting the initial HTML
 const parentDiv = document.getElementById("rotating-elements");
 parentDiv.innerHTML = `
 <a href="#" id="left-side">
-  <p id="left">${data[data.length - 1 - currentIndex]}</p>
+  ${data[data.length - 1 - currentIndex]}
 </a>
 <a href="#" id="currently-selected" class="hovered">
-  <p id="middle">${data[currentIndex]}</p>
+  ${data[currentIndex]}
 </a>
 <a href="#" id="right-side">
-  <p id="right">${data[currentIndex + 1]}</p>
+  ${data[currentIndex + 1]}
 </a>
 `;
-
-// const leftItem = document.getElementById("left-side").children[0];
-// const middleItem = document.getElementById("middle");
-// const rightItem = document.getElementById("right");
 
 // button handling
 const nextButton = document.getElementById("next-button");
 const prevButton = document.getElementById("prev-button");
 
-// 3 bubbles
-const m = document.getElementById("middle");
-const l = document.getElementById("left");
-const r = document.getElementById("right");
-
 const nextHandler = () => {
+  // Every iteration, grab the elements
+  const left = document.getElementById("left-side");
   const current = document.getElementById("currently-selected");
   const right = document.getElementById("right-side");
-  const left = document.getElementById("left-side");
-  current.style =
-    "width: 150px; height: 150px; font-size: 15px; filter: blur(3px); z-index: 1";
-  right.style =
-    "width: 200px; height: 200px; font-size: 25px; filter: blur(0px); z-index: 3";
-  left.style = "z-index: -1; filter: opacity(0)";
-  left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
+
+  // Set the styling for each visible element to be animated
   right.classList.add("hovered");
-  right.id = "currently-selected";
+  current.classList.remove("hovered");
+
+  // Set the inner HTML and associate the appropriate ID
+
   left.id = "right-side";
   current.id = "left-side";
-  current.classList.remove("hovered");
+  right.id = "currently-selected";
+
+  left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
+  current.innerHTML = `${data[currentIndex]}`;
+  right.innerHTML = `${
+    data[currentIndex + 1] ? data[currentIndex + 1] : data[0]
+  }`;
+
+  indexHandler("next");
 };
 
 const prevHandler = () => {
+  // Every iteration, grab the elements
   const current = document.getElementById("currently-selected");
-  const right = document.getElementById("left-side");
-  const left = document.getElementById("right-side");
-  current.style =
-    "width: 150px; height: 150px; font-size: 15px; filter: blur(3px); z-index: 1";
-  right.style =
-    "width: 200px; height: 200px; font-size: 25px; filter: blur(0px); z-index: 3";
-  left.style = "z-index: -1; filter: opacity(0)";
-  left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
-  right.classList.add("hovered");
-  right.id = "currently-selected";
-  left.id = "left-side";
-  current.id = "right-side";
+  const right = document.getElementById("right-side");
+  const left = document.getElementById("left-side");
+
+  // Set the styling for each visible element to be animated
+  left.classList.add("hovered");
   current.classList.remove("hovered");
+
+  // Set the inner HTML and associate the appropriate ID
+  current.id = "right-side";
+  right.id = "left-side";
+  left.id = "currently-selected";
+
+  current.innerHTML = `${
+    data[currentIndex + 1] ? data[currentIndex + 1] : data[0]
+  }`;
+  right.innerHTML = `${data[data.length - 1 - currentIndex]}`;
+  left.innerHTML = `${data[currentIndex]}`;
+
+  indexHandler("prev");
 };
 
 prevButton.addEventListener("click", prevHandler);
