@@ -19,7 +19,6 @@ const indexHandler = (direction) => {
       console.log("Decrement");
     }
   }
-  console.log(currentIndex);
 };
 
 // Setting the initial HTML
@@ -42,23 +41,25 @@ const prevButton = document.getElementById("prev-button");
 
 const nextHandler = () => {
   // Every iteration, grab the elements
+  const left = document.getElementById("left-side");
   const current = document.getElementById("currently-selected");
   const right = document.getElementById("right-side");
-  const left = document.getElementById("left-side");
 
   // Set the styling for each visible element to be animated
   right.classList.add("hovered");
   current.classList.remove("hovered");
 
   // Set the inner HTML and associate the appropriate ID
+
+  left.id = "right-side";
+  current.id = "left-side";
+  right.id = "currently-selected";
+
+  left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
+  current.innerHTML = `${data[currentIndex]}`;
   right.innerHTML = `${
     data[currentIndex + 1] ? data[currentIndex + 1] : data[0]
   }`;
-  right.id = "currently-selected";
-  left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
-  left.id = "right-side";
-  current.innerHTML = `${data[currentIndex]}`;
-  current.id = "left-side";
 
   indexHandler("next");
 };
@@ -75,15 +76,14 @@ const prevHandler = () => {
 
   // Set the inner HTML and associate the appropriate ID
   current.id = "right-side";
+  right.id = "left-side";
+  left.id = "currently-selected";
+
   current.innerHTML = `${
     data[currentIndex + 1] ? data[currentIndex + 1] : data[0]
   }`;
-
   right.innerHTML = `${data[data.length - 1 - currentIndex]}`;
-  right.id = "left-side";
-
   left.innerHTML = `${data[currentIndex]}`;
-  left.id = "currently-selected";
 
   indexHandler("prev");
 };
