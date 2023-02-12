@@ -10,17 +10,16 @@ const indexHandler = (direction) => {
       currentIndex++;
       console.log("Increment");
     }
-    // if (direction === "prev") {
-    //   if (currentIndex > 0) {
-    //     currentIndex--;
-    //     console.log("Decrement");
-    //   } else {
-    //     currentIndex = data.length;
-    //     console.log("Reset");
-    //   }
-    // }
-    console.log(currentIndex);
+  } else if (direction === "prev") {
+    if (currentIndex === 0) {
+      currentIndex = data.length - 1;
+      console.log("Reset");
+    } else if (currentIndex > 0) {
+      currentIndex--;
+      console.log("Decrement");
+    }
   }
+  console.log(currentIndex);
 };
 
 // Setting the initial HTML
@@ -37,58 +36,57 @@ parentDiv.innerHTML = `
 </a>
 `;
 
-// const leftItem = document.getElementById("left-side").children[0];
-// const middleItem = document.getElementById("middle");
-// const rightItem = document.getElementById("right");
-
 // button handling
 const nextButton = document.getElementById("next-button");
 const prevButton = document.getElementById("prev-button");
 
 const nextHandler = () => {
+  // Every iteration, grab the elements
   const current = document.getElementById("currently-selected");
   const right = document.getElementById("right-side");
   const left = document.getElementById("left-side");
-  current.style =
-    "width: 150px; height: 150px; font-size: 15px; filter: blur(3px); z-index: 1";
-  right.style =
-    "width: 200px; height: 200px; font-size: 25px; filter: blur(0px); z-index: 3";
-  left.style = "z-index: -1; filter: opacity(0)";
-  left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
+
+  // Set the styling for each visible element to be animated
   right.classList.add("hovered");
+  current.classList.remove("hovered");
+
+  // Set the inner HTML and associate the appropriate ID
   right.innerHTML = `${
     data[currentIndex + 1] ? data[currentIndex + 1] : data[0]
   }`;
   right.id = "currently-selected";
   left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
   left.id = "right-side";
-
   current.innerHTML = `${data[currentIndex]}`;
   current.id = "left-side";
-  current.classList.remove("hovered");
+
   indexHandler("next");
 };
 
-// const prevHandler = () => {
-//   const current = document.getElementById("currently-selected");
-//   const right = document.getElementById("left-side");
-//   const left = document.getElementById("right-side");
-//   current.style =
-//     "width: 150px; height: 150px; font-size: 15px; filter: blur(3px); z-index: 1";
-//   right.style =
-//     "width: 200px; height: 200px; font-size: 25px; filter: blur(0px); z-index: 3";
-//   left.style = "z-index: -1; filter: opacity(0)";
-//   left.style = "z-index: 1; filter: opacity(1); filter: blur(3px);";
-//   right.classList.add("hovered");
-//   right.innerHTML = `${data[currentIndex + 1]}`;
-//   right.id = "currently-selected";
-//   left.innerHTML = `${data[data.length - 1 - currentIndex]}`;
-//   left.id = "left-side";
-//   current.innerHTML = `${data[currentIndex]}`;
-//   current.id = "right-side";
-//   current.classList.remove("hovered");
-//   indexHandler("prev");
-// };
+const prevHandler = () => {
+  // Every iteration, grab the elements
+  const current = document.getElementById("currently-selected");
+  const right = document.getElementById("right-side");
+  const left = document.getElementById("left-side");
 
-// prevButton.addEventListener("click", prevHandler);
+  // Set the styling for each visible element to be animated
+  left.classList.add("hovered");
+  current.classList.remove("hovered");
+
+  // Set the inner HTML and associate the appropriate ID
+  current.id = "right-side";
+  current.innerHTML = `${
+    data[currentIndex + 1] ? data[currentIndex + 1] : data[0]
+  }`;
+
+  right.innerHTML = `${data[data.length - 1 - currentIndex]}`;
+  right.id = "left-side";
+
+  left.innerHTML = `${data[currentIndex]}`;
+  left.id = "currently-selected";
+
+  indexHandler("prev");
+};
+
+prevButton.addEventListener("click", prevHandler);
 nextButton.addEventListener("click", nextHandler);
